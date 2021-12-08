@@ -17,6 +17,9 @@ export const createPost = async (req, res) => {
     createdAt: new Date().toISOString(),
   });
 
+  console.log(post);
+  console.log(newPost);
+
   try {
     await newPost.save();
 

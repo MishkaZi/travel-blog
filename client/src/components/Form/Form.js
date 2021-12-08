@@ -9,7 +9,7 @@ const Form = () => {
   const classes = usestyles();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
-    creator: '',
+    name: '',
     title: '',
     message: '',
     tags: '',
@@ -22,7 +22,7 @@ const Form = () => {
   };
 
   const clear = () => {
-    setPostData(null);
+    setPostData({ title: '', message: '', tags: '', selectedFile: '' });
   };
 
   return (
@@ -34,16 +34,14 @@ const Form = () => {
         onSubmit={handleSubmit}
       >
         <Typography variant='h6'> Create a Post</Typography>
-        {/* creator */}
+        {/* name */}
         <TextField
-          name='creator'
+          name='name'
           variant='outlined'
-          label='Creator'
+          label='name'
           fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
+          value={postData.name}
+          onChange={(e) => setPostData({ ...postData, name: e.target.value })}
         />
         {/* title */}
         <TextField
