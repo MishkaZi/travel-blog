@@ -43,34 +43,11 @@ export const updatePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  const postId = re.params.id;
+  const postId = req.params.id;
 
-  if (mongoose.Types.ObjectId.isValid(postId)) {
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
     return res.status(404).send('Post not found');
   }
-
-  try {
-    await PostMessage.remove(postId);
-
-    res.status(200);
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
-};
-
-export const like = async (req, res) => {
-  const post = req.body;
-  const newPost = new PostMessage({
-    ...post,
-    creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
-
-  try {
-    await newPost.save();
-
-    res.status(201).json(newPost);
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
+  await PostMessage.findByIdAndRemove(postId);
+  res.json('Post deleted');
 };
