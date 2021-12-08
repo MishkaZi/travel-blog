@@ -12,9 +12,13 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { currentIdAction } from '../../../actions/posts';
 
 const Post = (post) => {
   const classes = usestyles();
+  const dispatch = useDispatch();
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -31,7 +35,13 @@ const Post = (post) => {
         </Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button style={{ color: 'white' }} size='small' onClick={() => {}}>
+        <Button
+          style={{ color: 'white' }}
+          size='small'
+          onClick={() => {
+            dispatch(currentIdAction(post._id));
+          }}
+        >
           <MoreHorizIcon fontSize='medium' />
         </Button>
       </div>
