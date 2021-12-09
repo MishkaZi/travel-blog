@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 import postRouter from './routes/posts.js ';
 
@@ -9,11 +10,11 @@ const app = express();
 app.use(bodyParser.json({ limit: '32mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '32mb', extended: true }));
 app.use(cors());
+dotenv.config();
 
 app.use('/posts', postRouter);
 
-const connection_url =
-  'mongodb+srv://root:1234@cluster0.2pvgi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const connection_url = process.env.CONNECTION_URL;
 const port = process.env.PORT || 3001;
 
 mongoose
