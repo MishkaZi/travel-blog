@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
 import postRouter from './routes/posts.js ';
+import usersRouter from './routes/users.js ';
 
 const app = express();
 app.use(bodyParser.json({ limit: '32mb', extended: true }));
@@ -13,6 +14,7 @@ app.use(cors());
 dotenv.config();
 
 app.use('/posts', postRouter);
+app.use('/users', usersRouter);
 
 const connection_url = process.env.CONNECTION_URL;
 const port = process.env.PORT || 3001;

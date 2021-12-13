@@ -8,3 +8,8 @@ export const updatePost = (id, updatedPost) =>
   axios.patch(`${url}/${id}`, updatedPost);
 export const deletePost = (id) => axios.delete(`${url}/${id}`);
 export const likePost = (id) => axios.patch(`${url}/${id}/likepost`);
+
+//Auth
+export const signin = (userInfo) => axios.post(`${url}/login`, userInfo);
+export const signup = (newUserInfo) => axios.post(`${url}/signup`, newUserInfo);
+export const logout = (id) => axios.get(`${url}/logout/${id}`);
