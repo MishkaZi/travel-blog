@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Typography, Toolbar, Button, Avatar } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { LOGOUT } from '../../constants/actionTypes';
+import decode from 'jwt-decode';
 
 const NavBar = () => {
   const classes = usestyles();
@@ -13,18 +14,24 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    // const token = user?.token;
-    //JWT
-
-    setUser(JSON.parse(localStorage.getItem('profile')));
-  }, [location, user?.token]);
-
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate('/auth');
     setUser(null);
   };
+
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logout();
+      }
+    }
+
+    setUser(JSON.parse(localStorage.getItem('profile')));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, user?.token]);
 
   return (
     <AppBar className={classes.appBar} position='static' color='inherit'>

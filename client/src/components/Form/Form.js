@@ -9,12 +9,13 @@ const Form = () => {
   const classes = usestyles();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
-    name: '',
     title: '',
     message: '',
     tags: [],
     selectedFile: '',
   });
+
+  const user = JSON.parse(localStorage.getItem('profile'));
 
   const currentId = useSelector((state) => state.currentId);
 
@@ -32,16 +33,15 @@ const Form = () => {
     e.preventDefault();
 
     if (currentId) {
-      dispatch(updatePost(currentId, postData));
+      dispatch(updatePost(currentId, { ...postData, name: user?.result.name }));
     } else {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.result.name }));
     }
     clear();
   };
 
   const clear = () => {
     setPostData({
-      name: '',
       title: '',
       message: '',
       tags: '',
@@ -49,7 +49,15 @@ const Form = () => {
     });
     dispatch(currentIdAction(null));
   };
-
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant='h6' align='center'>
+          Please Sign In to Like or create new posts
+        </Typography>
+      </Paper>
+    );
+  }
   return (
     <Paper className={classes.paper}>
       <form
@@ -62,15 +70,6 @@ const Form = () => {
           {' '}
           {currentId ? 'Update' : 'Create'} a Post
         </Typography>
-        {/* name */}
-        <TextField
-          name='name'
-          variant='outlined'
-          label='name'
-          fullWidth
-          value={postData.name}
-          onChange={(e) => setPostData({ ...postData, name: e.target.value })}
-        />
         {/* title */}
         <TextField
           name='title'
